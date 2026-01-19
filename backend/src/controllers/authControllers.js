@@ -41,9 +41,18 @@ exports.login = async(req,res) =>{
             return res.status(400).json({message:"Password incorrect"});
         }
 
+        exist.password = undefined;
+
+        const token = await jwt.sign(
+            {id:exist._id , role:exist.role},
+            process.env.JWT_SECRET,
+            {expiresIn:process.env.JWT_EXPIRES_}
+        );
+
 
      res.status(200).json({
-      message: "Login successful"
+      message: "Login successful",
+      token
     });
 
   } catch (error) {
